@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bb_menu_home"
+        android:icon="@drawable/ic_favorites"
+        android:title="主页" />
+    <item
+        android:id="@+id/bb_menu_community"
+        android:icon="@drawable/ic_nearby"
+        android:title="话题" />
+    <item
+        android:id="@+id/bb_menu_personal"
+        android:icon="@drawable/ic_friends"
+        android:title="个人中心" />
+
+</menu>

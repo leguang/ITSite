@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <in.srain.cube.views.ptr.PtrFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/store_house_ptr_frame_news_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/base_color"
+            cube_ptr:ptr_duration_to_close="200"
+            cube_ptr:ptr_duration_to_close_header="1000"
+            cube_ptr:ptr_keep_header_when_refresh="true"
+            cube_ptr:ptr_pull_to_fresh="false"
+            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+            cube_ptr:ptr_resistance="1.7">
+
+            <WebView
+                android:id="@+id/wv_news"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true" />
+        </in.srain.cube.views.ptr.PtrFrameLayout>
+
+        <cn.itsite.view.MetaballView
+            android:id="@+id/metaball"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_news_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/base_color"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <ImageButton
+            android:id="@+id/ib_more"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/menu_moreoverflow_mtrl_alpha"
+            android:onClick="onClick_more" />
+
+        <EditText
+            android:id="@+id/tv_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:background="@color/base_color"
+            android:gravity="top"
+            android:hint="快来吐槽吧……"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <ImageButton
+            android:id="@+id/ib_comments"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/reply"
+            android:onClick="onClick_comment" />
+    </LinearLayout>
+
+</RelativeLayout>

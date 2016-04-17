@@ -1,0 +1,99 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+
+    <style name="AppTheme.Transparent">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+
+    <!--自定义tablayout样式-->
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabMaxWidth">@dimen/tab_max_width</item>
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+
+    <style name="RegisterErrorTheme" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <!--登陆模块-->
+    <style name="MaterialLoginTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+
+    <style name="MaterialLoginTheme.SelectableItemTheme">
+        <item name="colorControlHighlight">@color/material_login_register_color</item>
+    </style>
+
+    <style name="MaterialLoginTheme.SelectableItemBackground">
+        <item name="android:theme">@style/MaterialLoginTheme.SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="MaterialLoginTheme.TextAppearanceRegister">
+        <item name="android:textColor">@color/material_login_login_color</item>
+        <item name="colorControlNormal">@color/material_login_login_color</item>
+        <item name="android:textColorHint">@color/material_login_login_color</item>
+        <item name="colorControlActivated">@color/material_login_login_color</item>
+        <item name="colorControlHighlight">@color/material_login_login_color</item>
+    </style>
+
+    <style name="MaterialLoginTheme.TextAppearanceLogin">
+        <item name="android:textColor">@color/material_login_register_color</item>
+        <item name="colorControlNormal">@color/material_login_register_color</item>
+        <item name="android:textColorHint">@color/material_login_register_color</item>
+        <item name="colorControlActivated">@color/material_login_register_color</item>
+        <item name="colorControlHighlight">@color/material_login_register_color</item>
+    </style>
+
+    <style name="MaterialLoginTheme.TextAppearanceLoginError" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/material_login_login_error_color</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="MaterialLoginTheme.TextAppearanceRegisterError" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/material_login_register_error_color</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!--评论模块-->
+    <style name="like_bar_item_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textColor">@color/selector_like_bar_item_text_color</item>
+    </style>
+
+</resources>

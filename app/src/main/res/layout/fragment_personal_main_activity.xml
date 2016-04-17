@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_topbar_personal_fragment" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/base_color"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:id="@+id/tv_today_weather"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="今天" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_head_icon_personal_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/head_portrait" />
+
+            <TextView
+                android:id="@+id/tv_nickname_personal_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="登陆/注册"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_tomorrow_weather"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="明天" />
+    </LinearLayout>
+
+
+    <GridView
+        android:id="@+id/gv_top_myfragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:cacheColorHint="@color/transparent"
+        android:horizontalSpacing="1px"
+        android:listSelector="@color/transparent"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"></GridView>
+
+
+    <ListView
+        android:id="@+id/lv_mid_myfragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@color/transparent" />
+
+    <GridView
+        android:id="@+id/gv_bottom_myfragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/light_gray"
+        android:cacheColorHint="@color/transparent"
+        android:horizontalSpacing="1px"
+        android:listSelector="@color/transparent"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"></GridView>
+
+
+</LinearLayout>

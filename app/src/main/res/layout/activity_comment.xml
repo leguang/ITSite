@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/tv_comments_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题"
+            android:textColor="#000"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_comments_upDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/tv_comments_title"
+            android:text="2015-03-16 16:20"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tv_comments_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_comments_title"
+            android:layout_toRightOf="@+id/tv_comments_upDate"
+            android:text="评论：6522"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@color/material_login_login_color"
+        card_view:cardCornerRadius="10dp">
+
+        <RadioGroup
+            android:id="@+id/rb_comments_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="1dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <RadioButton
+                android:id="@+id/rb_comments_left"
+                style="@style/like_bar_item_style"
+                android:drawableTop="@drawable/selector_like_bar_flower_comment_activity"
+                android:text="新闻" />
+
+            <RadioButton
+                android:id="@+id/rb_comments_mid"
+                style="@style/like_bar_item_style"
+                android:drawableTop="@drawable/selector_like_bar_flower_comment_activity"
+                android:text="组图" />
+
+            <RadioButton
+                android:id="@+id/rb_comments_right"
+                style="@style/like_bar_item_style"
+                android:drawableTop="@drawable/selector_like_bar_flower_comment_activity"
+                android:text="我" />
+        </RadioGroup>
+
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/gray"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热门评论" />
+
+        <RadioGroup
+            android:id="@+id/rb_comments_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_comments_zuizao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最早" />
+
+            <RadioButton
+                android:id="@+id/rb_comments_zuixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最新" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_comments_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/light_gray"></ListView>
+
+</LinearLayout>

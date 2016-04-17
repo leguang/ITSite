@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rsv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_share_activity"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="30dp"
+        android:text="快来分享吧"
+        android:textColor="@color/white" />
+
+    <GridView
+        android:id="@+id/gv_more_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="@null"
+        android:horizontalSpacing="20dp"
+        android:numColumns="3"
+        android:verticalSpacing="20dp"></GridView>
+
+    <TextView
+        android:id="@+id/tv_typeface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:text="字体大小"
+        android:textColor="@color/white" />
+
+    <cn.itsite.view.RangeSliderView
+        android:id="@+id/rsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        rsv:barHeightPercent="0.08"
+        rsv:emptyColor="@color/rsv_empty_color"
+        rsv:filledColor="@color/base_color"
+        rsv:rangeCount="5"
+        rsv:sliderRadiusPercent="0.15"
+        rsv:slotRadiusPercent="0.1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <GridView
+            android:id="@+id/gv_more_function"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@null"
+            android:horizontalSpacing="20dp"
+            android:numColumns="3"
+            android:verticalSpacing="20dp"></GridView>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_cancel_share_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_cancel_share_activity" />
+
+</LinearLayout>

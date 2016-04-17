@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FC0</color>
+    <color name="colorPrimaryDark">#FC0</color>
+    <color name="colorAccent">#FC0</color>
+
+
+    <!-- 常用颜色值 -->
+    <color name="base_color">#FC0</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="gray">#808080</color>
+    <color name="light_gray">#f0f0f0</color>
+    <color name="red">#F00</color>
+    <color name="gold">#FFD700</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#008000</color>
+    <color name="purple">#800080</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="orange">#FFA500</color>
+    <color name="light_blue">#0083FF</color>
+    <color name="transparent">#0000</color>
+    <color name="lightest_gray">#0a000000</color>
+
+    <!-- 特定部位颜色值 -->
+    <color name="rsv_empty_color">#EEE</color>
+
+
+    <!--登陆模块-->
+    <color name="material_login_login_color">#FC0</color>
+    <color name="material_login_register_color">#FFF</color>
+    <color name="material_login_login_error_color">#FF00</color>
+    <color name="material_login_register_error_color">#FF00</color>
+    <color name="material_login_login_text_color">#000</color>
+    <color name="material_login_register_text_color">#000</color>
+    <color name="login_register_background">#C000</color>
+
+    <!--分享模块-->
+    <color name="background_share_activity">#C000</color>
+
+</resources>
