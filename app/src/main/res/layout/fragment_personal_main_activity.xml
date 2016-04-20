@@ -32,11 +32,15 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/iv_head_icon_personal_fragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/head_portrait" />
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/head_portrait"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp" />
+
 
             <TextView
                 android:id="@+id/tv_nickname_personal_fragment"

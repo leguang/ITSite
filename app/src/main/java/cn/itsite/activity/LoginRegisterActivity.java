@@ -408,20 +408,11 @@ public class LoginRegisterActivity extends BaseActivity {
     }
 
     public void login() {
-        mTencent = Tencent.createInstance(ConstantsUtils.QQ_APP_ID, this.getApplicationContext());
-        String token = SpUtils.getString(this, Constants.PARAM_ACCESS_TOKEN, null);
-        String expires = SpUtils.getString(this, Constants.PARAM_EXPIRES_IN, null);
-        String openId = SpUtils.getString(this, Constants.PARAM_OPEN_ID, null);
-
-        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
-            mTencent.setAccessToken(token, expires);
-            mTencent.setOpenId(openId);
-        }
-
+        mTencent = BaseApplication.mTencent;
 
         if (!mTencent.isSessionValid()) {
 
-            System.out.println(mTencent.isSessionValid());
+            System.out.println(mTencent.isSessionValid() + "&&&&&&&&&&&&&&&&&&&&&&&&&");
             mTencent.login(this, "all", loginListener);
         }
     }
@@ -469,6 +460,10 @@ public class LoginRegisterActivity extends BaseActivity {
         String expires = jsonObject.optString(Constants.PARAM_EXPIRES_IN);
         String openId = jsonObject.optString(Constants.PARAM_OPEN_ID);
 
+        BaseApplication.loginInfo.token = token;
+        BaseApplication.loginInfo.expires = expires;
+        BaseApplication.loginInfo.openId = openId;
+
         SpUtils.setString(this, Constants.PARAM_ACCESS_TOKEN, token);
         SpUtils.setString(this, Constants.PARAM_EXPIRES_IN, expires);
         SpUtils.setString(this, Constants.PARAM_OPEN_ID, openId);
@@ -510,12 +505,12 @@ public class LoginRegisterActivity extends BaseActivity {
 
             if (json.has("figureurl")) {
 
-                System.out.println(json.optString("figureurl_qq_2"));
+                System.out.println(json.optString("figureurl_qq_1"));
 
-                String figureurl = json.optString("figureurl_qq_2");
+                String figureurl = json.optString("figureurl_qq_1");
 
-                BaseApplication.userConfig.figureurUrl = figureurl;
-                SpUtils.setString(LoginRegisterActivity.this, ConstantsUtils.FIGUREURL, figureurl);
+                BaseApplication.userInfo.figureurUrl = figureurl;
+                SpUtils.setString(LoginRegisterActivity.this, ConstantsUtils.USERINFO_FIGUREURL, figureurl);
 
             }
 
@@ -523,13 +518,15 @@ public class LoginRegisterActivity extends BaseActivity {
                 System.out.println(json.optString("nickname"));
                 String nickname = json.optString("nickname");
 
-                BaseApplication.userConfig.nickname = nickname;
-                SpUtils.setString(LoginRegisterActivity.this, ConstantsUtils.NICKNAME, nickname);
+                BaseApplication.userInfo.nickname = nickname;
+                SpUtils.setString(LoginRegisterActivity.this, ConstantsUtils.USERINFO_NICKNAME, nickname);
             }
+            BaseApplication.userInfo.loginType = 1;
+
+            SpUtils.setBoolean(LoginRegisterActivity.this, ConstantsUtils.ISLOGIN, true);
 
             BaseApplication.bus.register(LoginRegisterActivity.this);
-
-            BaseApplication.bus.post(BaseApplication.userConfig);
+            BaseApplication.bus.post(BaseApplication.userInfo);
         }
 
         @Override

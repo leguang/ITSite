@@ -1,6 +1,10 @@
 package cn.itsite.utils;
 
 public class ConstantsUtils {
+
+    /**
+     * 常用接口、url
+     */
     public static final String DOMAIN_1 = "itsite.cn";
     public static final String DOMAIN_2 = "it-site";
     public static final String SERVER_URL = "http://itsite.cn/json/constants.json";
@@ -19,8 +23,22 @@ public class ConstantsUtils {
     /**
      * 用户信息
      */
-    public static final String NICKNAME = "nickname";
-    public static final String FIGUREURL = "figureurl";
+    public static final String USERINFO_NICKNAME = "userinfo_nickname";
+    public static final String USERINFO_FIGUREURL = "userinfo_figureurl";
+    public static final String USERINFO_LOGIN_TYPE = "userinfo_login_type";
 
+    /**
+     * 有效时间
+     */
     public static final Long VALID_TIME = 1000l;
+    /**
+     * 登陆类型
+     */
+    public static final int ERROR_LOGIN_TYPE = -1;
+    public static final int MOBILE_LOGIN = 0;
+    public static final int QQ_LOGIN = 1;
+    public static final int WEIXIN_LOGIN = 2;
+    public static final int WEIBO_LOGIN = 3;
+    public static final String ISLOGIN = "islogin";
+
 }

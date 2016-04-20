@@ -27,11 +27,12 @@ import java.net.URLEncoder;
 
 import cn.itsite.R;
 import cn.itsite.application.BaseApplication;
-import cn.itsite.bean.UserConfig;
+import cn.itsite.bean.UserInfoData;
 import cn.itsite.bean.WeatherData;
 import cn.itsite.utils.ConstantsUtils;
 import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ToastUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonalFragment extends Fragment {
 
@@ -44,10 +45,10 @@ public class PersonalFragment extends Fragment {
     private GridView gv_top_myfragment;
     private GridView gv_bottom_myfragment;
     private ListView lv_mid_myfragment;
-
+    private UserInfoData userInfo;
     private TextView tv_today_weather;
     private TextView tv_nickname;
-    private ImageView iv_head_icon;
+    private CircleImageView iv_head_icon;
     private TextView tv_tomorrow_weather;
 
     public RequestQueue mRequestQueue;
@@ -80,7 +81,7 @@ public class PersonalFragment extends Fragment {
 
         tv_nickname = (TextView) view.findViewById(R.id.tv_nickname_personal_fragment);
 
-        iv_head_icon = (ImageView) view.findViewById(R.id.iv_head_icon_personal_fragment);
+        iv_head_icon = (CircleImageView) view.findViewById(R.id.iv_head_icon_personal_fragment);
 
         tv_today_weather = (TextView) view.findViewById(R.id.tv_today_weather);
         tv_tomorrow_weather = (TextView) view.findViewById(R.id.tv_tomorrow_weather);
@@ -103,7 +104,7 @@ public class PersonalFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        initData();
+        initData();
 
 
         String cache = SpUtils.getString(getActivity(), ConstantsUtils.WEATHER_URL, null);
@@ -122,13 +123,20 @@ public class PersonalFragment extends Fragment {
 
     }
 
+    private void initData() {
+        if (BaseApplication.islogin) {
+            tv_nickname.setText(BaseApplication.userInfo.nickname);
+            Glide.with(this).load(BaseApplication.userInfo.figureurUrl).crossFade().into(iv_head_icon);
+        }
+    }
+
 
     @Subscribe
-    public void initData( UserConfig userConfig ) {
+    public void updateUi(UserInfoData userInfo) {
 
-        if (userConfig.nickname != null) {
-            tv_nickname.setText(userConfig.nickname);
-            Glide.with(this).load(userConfig.figureurUrl).placeholder(R.drawable.defaultpicture).crossFade().into(iv_head_icon);
+        if (userInfo.nickname != null) {
+            tv_nickname.setText(userInfo.nickname);
+            Glide.with(this).load(userInfo.figureurUrl).crossFade().into(iv_head_icon);
         }
     }
 

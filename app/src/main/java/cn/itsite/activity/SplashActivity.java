@@ -17,6 +17,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.Tencent;
 
 import java.io.UnsupportedEncodingException;
 
@@ -27,6 +29,7 @@ import cn.itsite.bean.CategoriesData;
 import cn.itsite.bean.WeatherData;
 import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ConstantsUtils;
+import cn.itsite.utils.ToastUtils;
 
 public class SplashActivity extends BaseActivity {
     public LocationClient mLocationClient = null;
@@ -46,8 +49,48 @@ public class SplashActivity extends BaseActivity {
 
         initView();
         initData();
+        initLogin();
         getServer();
         initLocation();
+    }
+
+    private void initLogin() {
+        BaseApplication.islogin = SpUtils.getBoolean(this, ConstantsUtils.ISLOGIN, false);
+
+        if (BaseApplication.islogin) {
+            BaseApplication.mTencent = Tencent.createInstance(ConstantsUtils.QQ_APP_ID, this.getApplicationContext());
+            String token = SpUtils.getString(this, Constants.PARAM_ACCESS_TOKEN, null);
+            String expires = SpUtils.getString(this, Constants.PARAM_EXPIRES_IN, null);
+            String openId = SpUtils.getString(this, Constants.PARAM_OPEN_ID, null);
+
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
+                BaseApplication.mTencent.setAccessToken(token, expires);
+                BaseApplication.mTencent.setOpenId(openId);
+            }
+
+
+            if (BaseApplication.mTencent.isSessionValid()) {
+
+                System.out.println(BaseApplication.mTencent.isSessionValid() + "********################*************");
+
+                BaseApplication.userInfo.nickname = SpUtils.getString(this, ConstantsUtils.USERINFO_NICKNAME, null);
+                BaseApplication.userInfo.figureurUrl = SpUtils.getString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
+                BaseApplication.userInfo.loginType = SpUtils.getInt(this, ConstantsUtils.USERINFO_LOGIN_TYPE, ConstantsUtils.ERROR_LOGIN_TYPE);
+
+
+            } else {
+
+                BaseApplication.islogin = false;
+                SpUtils.setBoolean(this, ConstantsUtils.ISLOGIN, BaseApplication.islogin);
+                ToastUtils.showToast(this, "登陆已过期");
+
+                SpUtils.setString(this, ConstantsUtils.USERINFO_NICKNAME, null);
+                SpUtils.setString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
+                SpUtils.setString(this, ConstantsUtils.USERINFO_LOGIN_TYPE, null);
+
+            }
+
+        }
     }
 
     private void initLocation() {
@@ -85,7 +128,7 @@ public class SplashActivity extends BaseActivity {
                     break;
                 default:
                     cityName = location.getCity();
-                    System.out.println("*****************定位定位********************"+cityName);
+                    System.out.println("*****************定位定位********************" + cityName);
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
                     System.out.println("*****************定位定位********************");
@@ -94,7 +137,7 @@ public class SplashActivity extends BaseActivity {
                         SpUtils.setString(SplashActivity.this, "cityName", cityName);
                         SpUtils.setFloat(SplashActivity.this, "latitude", Float.parseFloat(latitude.toString()));
                         SpUtils.setFloat(SplashActivity.this, "longitude", Float.parseFloat(longitude.toString()));
-                        System.out.println("*****************定位定位********************"+cityName);
+                        System.out.println("*****************定位定位********************" + cityName);
                         jumpTo();
                     }
                     break;
@@ -130,7 +173,7 @@ public class SplashActivity extends BaseActivity {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                System.out.println("*****************网络********************"+response);
+                System.out.println("*****************网络********************" + response);
                 parseData(response);
 
                 // 设置缓存
