@@ -19,6 +19,7 @@ import com.tencent.tauth.UiError;
 
 import cn.itsite.R;
 import cn.itsite.activity.base.BaseActivity;
+import cn.itsite.adapter.IconAdapter;
 import cn.itsite.bean.NewsData;
 import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ConstantsUtils;
@@ -29,7 +30,6 @@ public class ShareActivity extends BaseActivity {
 
     private GridView gv_more_share;
     private GridView gv_more_function;
-    private MyBaseAdapter mBaseAdapter;
     private WebView wv_news;
     private NewsData newsData;
     private TextView tv_typeface;
@@ -69,9 +69,8 @@ public class ShareActivity extends BaseActivity {
     }
 
     public void initData() {
-        mBaseAdapter = new MyBaseAdapter();
-        gv_more_share.setAdapter(mBaseAdapter);
-        gv_more_function.setAdapter(new FunctionBaseAdapter());
+        gv_more_share.setAdapter(new IconAdapter(this, shareIcons, shareNames, R.layout.layout_gv_item_more_share_activity, R.id.iv_icon_more_share_activity, R.id.tv_name_more_share_activity));
+        gv_more_function.setAdapter(new IconAdapter(this, functionIcons, functionNames, R.layout.layout_gv_item_more_share_activity, R.id.iv_icon_more_share_activity, R.id.tv_name_more_share_activity));
         gv_more_share.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -193,33 +192,6 @@ public class ShareActivity extends BaseActivity {
         mTencent.shareToQQ(ShareActivity.this, params, qqShareListener);
     }
 
-    class MyBaseAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return shareNames.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return shareNames[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = View.inflate(ShareActivity.this, R.layout.layout_gv_item_more_share_activity, null);
-            TextView tv_share_name = (TextView) view.findViewById(R.id.tv_name);
-            ImageView iv_share_icon = (ImageView) view.findViewById(R.id.iv_icon);
-            tv_share_name.setText(shareNames[position]);
-            iv_share_icon.setImageResource(shareIcons[position]);
-            return view;
-        }
-    }
 
     class FunctionBaseAdapter extends BaseAdapter {
 

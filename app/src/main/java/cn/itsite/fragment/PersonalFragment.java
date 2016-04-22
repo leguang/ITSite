@@ -2,14 +2,13 @@ package cn.itsite.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,6 +25,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import cn.itsite.R;
+import cn.itsite.adapter.IconAdapter;
+import cn.itsite.adapter.ListSettingPersonalFragmentAdapter;
+import cn.itsite.adapter.OnItemClickLitener;
 import cn.itsite.application.BaseApplication;
 import cn.itsite.bean.UserInfoData;
 import cn.itsite.bean.WeatherData;
@@ -38,13 +40,13 @@ public class PersonalFragment extends Fragment {
 
     private TextView tv_name_topbar;
 
-    private MyGridBaseAdapter mAdapterTop;
-    private MyGridBaseAdapter mAdapterBottom;
-    private MyListViewBaseAdapter mAdaptermid;
+    private IconAdapter topAdapter;
+    private IconAdapter bottomAdapter;
+    private ListSettingPersonalFragmentAdapter midAdapter;
 
     private GridView gv_top_myfragment;
     private GridView gv_bottom_myfragment;
-    private ListView lv_mid_myfragment;
+    private RecyclerView rv_mid;
     private UserInfoData userInfo;
     private TextView tv_today_weather;
     private TextView tv_nickname;
@@ -62,6 +64,7 @@ public class PersonalFragment extends Fragment {
     private int[] bottomGridicons = {R.drawable.picture_or_no, R.drawable.introduction, R.drawable.delete_allshare};
 
     private String[] midListLefttexts = {"我的消息", "我的评论", "我的收藏", "我的反馈", "主题皮肤", "使用帮助", "关注IT站点", "版本号"};
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,13 +90,14 @@ public class PersonalFragment extends Fragment {
         tv_tomorrow_weather = (TextView) view.findViewById(R.id.tv_tomorrow_weather);
 
         gv_top_myfragment = (GridView) view.findViewById(R.id.gv_top_myfragment);
-        gv_top_myfragment.setAdapter(mAdapterTop = new MyGridBaseAdapter(topGridicons, topGridnames));
+        gv_top_myfragment.setAdapter(topAdapter = new IconAdapter(getActivity(), topGridicons, topGridnames, R.layout.layout_gv_item_personal_fragment_main_activity, R.id.iv_icon_gv_personal_fragment, R.id.tv_name_gv_personal_fragment));
 
-        lv_mid_myfragment = (ListView) view.findViewById(R.id.lv_mid_myfragment);
-        lv_mid_myfragment.setAdapter(mAdaptermid = new MyListViewBaseAdapter());
+        rv_mid = (RecyclerView) view.findViewById(R.id.rv_mid_personal_fragment);
+        rv_mid.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_mid.setAdapter(midAdapter = new ListSettingPersonalFragmentAdapter(getActivity(), midListLefttexts));
 
         gv_bottom_myfragment = (GridView) view.findViewById(R.id.gv_bottom_myfragment);
-        gv_bottom_myfragment.setAdapter(mAdapterBottom = new MyGridBaseAdapter(bottomGridicons, bottomGridnames));
+        gv_bottom_myfragment.setAdapter(bottomAdapter = new IconAdapter(getActivity(), bottomGridicons, bottomGridnames, R.layout.layout_gv_item_personal_fragment_main_activity, R.id.iv_icon_gv_personal_fragment, R.id.tv_name_gv_personal_fragment));
 
 
         return view;
@@ -128,6 +132,14 @@ public class PersonalFragment extends Fragment {
             tv_nickname.setText(BaseApplication.userInfo.nickname);
             Glide.with(this).load(BaseApplication.userInfo.figureurUrl).crossFade().into(iv_head_icon);
         }
+
+        midAdapter.setOnItemClickLitener(new OnItemClickLitener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                ToastUtils.showToast(getActivity(), "第" + position);
+            }
+        });
     }
 
 
@@ -140,76 +152,6 @@ public class PersonalFragment extends Fragment {
         }
     }
 
-
-    class MyGridBaseAdapter extends BaseAdapter {
-
-        private int[] icons;
-        private String[] names;
-
-        public MyGridBaseAdapter(int[] icons, String[] names) {
-            super();
-            this.icons = icons;
-            this.names = names;
-        }
-
-        @Override
-        public int getCount() {
-            return names.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            View view = View.inflate(getActivity(), R.layout.layout_gv_item_personal_fragment_main_activity, null);
-            ImageView iv_icon_gv_personal = (ImageView) view.findViewById(R.id.iv_icon_gv_personal);
-            TextView tv_name_gv_personal = (TextView) view.findViewById(R.id.tv_name_gv_personal);
-
-            iv_icon_gv_personal.setImageResource(icons[position]);
-            tv_name_gv_personal.setText(names[position]);
-
-            return view;
-        }
-
-    }
-
-    class MyListViewBaseAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return midListLefttexts.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            View view = View.inflate(getActivity(), R.layout.layout_lv_setting_item_personal_fragment_main_activity, null);
-            TextView tv_lefttext_setting_item = (TextView) view.findViewById(R.id.tv_lefttext_setting_item);
-            tv_lefttext_setting_item.setText(midListLefttexts[position]);
-
-            return view;
-        }
-
-    }
 
     /**
      * 获取天气接口数据
@@ -268,6 +210,4 @@ public class PersonalFragment extends Fragment {
         super.onDestroy();
         mRequestQueue.cancelAll(this);
     }
-
-
 }

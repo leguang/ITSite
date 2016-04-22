@@ -64,6 +64,8 @@
             android:theme="@style/AppTheme.Transparent"></activity>
         <activity android:name=".activity.CommentActivity"></activity>
 
+        <activity android:name=".activity.SerchActivity"></activity>
+
         <!-- 百度地图定位服务 -->
         <service
             android:name="com.baidu.location.f"

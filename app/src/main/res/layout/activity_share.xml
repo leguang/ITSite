@@ -21,8 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
-        android:background="@null"
+        android:cacheColorHint="@color/transparent"
         android:horizontalSpacing="20dp"
+        android:listSelector="@color/transparent"
         android:numColumns="3"
         android:verticalSpacing="20dp"></GridView>
 
@@ -59,8 +60,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
-            android:background="@null"
+            android:cacheColorHint="@color/transparent"
             android:horizontalSpacing="20dp"
+            android:listSelector="@color/transparent"
             android:numColumns="3"
             android:verticalSpacing="20dp"></GridView>
     </LinearLayout>

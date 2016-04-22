@@ -58,7 +58,7 @@ public class GuideActivity extends BaseActivity {
                 Intent intent = new Intent(GuideActivity.this, MainActivity.class);
                 startActivity(intent);
                 // 结束自己
-                finish();
+                GuideActivity.this.finish();
             }
         });
     }

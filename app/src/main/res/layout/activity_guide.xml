@@ -10,8 +10,9 @@
 
     <Button
         android:id="@+id/bt_guide_activity"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:text="点击进入"
         android:visibility="invisible" />
 

@@ -108,11 +108,12 @@
         </RadioGroup>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_comments_list"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_comments_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/light_gray"></ListView>
+        android:background="@color/light_gray" />
 
 </LinearLayout>

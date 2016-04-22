@@ -73,13 +73,13 @@
         android:stretchMode="columnWidth"></GridView>
 
 
-    <ListView
-        android:id="@+id/lv_mid_myfragment"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_mid_personal_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:cacheColorHint="@android:color/transparent"
-        android:listSelector="@color/transparent" />
+        android:listSelector="@color/transparent"
+        android:layout_marginTop="10dp" />
 
     <GridView
         android:id="@+id/gv_bottom_myfragment"
