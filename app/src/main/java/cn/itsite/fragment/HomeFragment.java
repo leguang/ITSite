@@ -16,7 +16,6 @@ import cn.itsite.activity.NewsPlatformActivity;
 import cn.itsite.activity.SerchActivity;
 import cn.itsite.adapter.OnItemClickLitener;
 import cn.itsite.adapter.PlatformSelectHomeFragmentAdapter;
-import cn.itsite.utils.ToastUtils;
 
 
 public class HomeFragment extends Fragment {
@@ -36,7 +35,7 @@ public class HomeFragment extends Fragment {
         tv_name_topbar = (TextView) view.findViewById(R.id.tv_title_topbar_home_fragment);
         tv_name_topbar.setText("主页");
 
-        ImageView  ib_search_topbar = (ImageView) view.findViewById(R.id.ib_search_topbar);
+        ImageView ib_search_topbar = (ImageView) view.findViewById(R.id.ib_search_topbar);
         ib_search_topbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +46,7 @@ public class HomeFragment extends Fragment {
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_select_paltform);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mRecyclerView.setAdapter(mAdapter = new PlatformSelectHomeFragmentAdapter(getActivity(),icons,names));
+        mRecyclerView.setAdapter(mAdapter = new PlatformSelectHomeFragmentAdapter(getActivity(), icons, names));
 
 
         return view;
@@ -66,7 +65,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onItemClick(View view, int position) {
-                ToastUtils.showToast(getActivity(), "第" + position);
                 Intent intent = new Intent(getActivity(), NewsPlatformActivity.class);
                 startActivity(intent);
             }

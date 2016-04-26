@@ -65,33 +65,35 @@
         android:id="@+id/gv_top_myfragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
+        android:background="@color/white"
         android:cacheColorHint="@color/transparent"
         android:horizontalSpacing="1px"
         android:listSelector="@color/transparent"
         android:numColumns="3"
-        android:stretchMode="columnWidth"></GridView>
+        android:stretchMode="columnWidth" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_mid_personal_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
         android:cacheColorHint="@android:color/transparent"
-        android:listSelector="@color/transparent"
-        android:layout_marginTop="10dp" />
+        android:listSelector="@color/transparent" />
 
     <GridView
         android:id="@+id/gv_bottom_myfragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@color/light_gray"
+        android:background="@color/white"
         android:cacheColorHint="@color/transparent"
         android:horizontalSpacing="1px"
         android:listSelector="@color/transparent"
         android:numColumns="3"
-        android:stretchMode="columnWidth"></GridView>
+        android:stretchMode="columnWidth" />
 
 
 </LinearLayout>

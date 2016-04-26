@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.squareup.otto.Subscribe;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import cn.itsite.R;
 import cn.itsite.activity.NewsDetailActivity;
+import cn.itsite.application.BaseApplication;
 import cn.itsite.bean.NewsData;
 import cn.itsite.ui.base.BaseController;
 import cn.itsite.utils.ConstantsUtils;
@@ -62,6 +64,7 @@ public class NewsListController extends BaseController {
         super(context);
         this.mUrl = rss_url;
         mRequestQueue = Volley.newRequestQueue(context);
+        BaseApplication.bus.register(this);
     }
 
     @Override
@@ -249,7 +252,7 @@ public class NewsListController extends BaseController {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_lv_item_viewpager_news_platform_activity, parent, false));
+            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_rv_list_item_viewpager_news_platform_activity, parent, false));
             return holder;
         }
 
@@ -312,5 +315,9 @@ public class NewsListController extends BaseController {
         void onItemClick(View view, int position);
     }
 
+    @Subscribe
+    public void gototop(Boolean gototop) {
+        rv_list.smoothScrollToPosition(0);
+    }
 
 }

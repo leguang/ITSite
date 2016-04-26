@@ -209,5 +209,6 @@ public class PersonalFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mRequestQueue.cancelAll(this);
+        BaseApplication.bus.unregister(this);
     }
 }

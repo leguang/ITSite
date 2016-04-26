@@ -423,6 +423,7 @@ public class LoginRegisterActivity extends BaseActivity {
         protected void doComplete(JSONObject values) {
             initOpenidAndToken(values);
             updateUserInfo();
+            LoginRegisterActivity.this.finish();
         }
     };
 
@@ -525,7 +526,6 @@ public class LoginRegisterActivity extends BaseActivity {
 
             SpUtils.setBoolean(LoginRegisterActivity.this, ConstantsUtils.ISLOGIN, true);
 
-            BaseApplication.bus.register(LoginRegisterActivity.this);
             BaseApplication.bus.post(BaseApplication.userInfo);
         }
 
@@ -543,5 +543,11 @@ public class LoginRegisterActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //注销
+        BaseApplication.bus.unregister(this);
+    }
 
 }

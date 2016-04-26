@@ -2,6 +2,7 @@ package cn.itsite.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,6 +27,7 @@ public class NewsPlatformActivity extends BaseActivity {
     private TabLayout mTabLayout;
     private ImageButton ib_lefterback_platform;
     private ImageButton ib_search_platform;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class NewsPlatformActivity extends BaseActivity {
 
     private void initView() {
 
+        fab = (FloatingActionButton) findViewById(R.id.fab_gototop_news_plattform_activity);
+
+
         ib_lefterback_platform = (ImageButton) findViewById(R.id.ib_lefterback_platform);
         ib_search_platform = (ImageButton) findViewById(R.id.ib_search_platform);
         mViewPager = (ViewPager) findViewById(R.id.vp_pager);
@@ -48,6 +53,14 @@ public class NewsPlatformActivity extends BaseActivity {
     }
 
     private void initData() {
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean gototop = true;
+                BaseApplication.bus.post(gototop);
+            }
+        });
 
         mAdapter = new MyPagerAdapter();
         if (mViewPager != null) {

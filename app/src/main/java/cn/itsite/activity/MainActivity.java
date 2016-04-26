@@ -3,18 +3,18 @@ package cn.itsite.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.annotation.IdRes;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
 import cn.itsite.R;
 import cn.itsite.activity.base.BaseActivity;
+import cn.itsite.application.BaseApplication;
 import cn.itsite.fragment.CommunityFragment;
 import cn.itsite.fragment.HomeFragment;
 import cn.itsite.fragment.PersonalFragment;
-import cn.itsite.utils.ToastUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -55,36 +55,39 @@ public class MainActivity extends BaseActivity {
                 switch (menuItemId) {
                     case R.id.bb_menu_home:
 
-                        ToastUtils.showToast(MainActivity.this, "home");
                         if (mHomeFragment == null) {
                             mHomeFragment = new HomeFragment();
                             ft.add(R.id.content_main_activity, mHomeFragment, "home");
                         } else {
                             ft.show(mHomeFragment);
                         }
+                        ft.commit();
                         break;
 
                     case R.id.bb_menu_community:
-                        ToastUtils.showToast(MainActivity.this, "community");
                         if (mCommunityFragment == null) {
                             mCommunityFragment = new CommunityFragment();
                             ft.add(R.id.content_main_activity, mCommunityFragment, "sort");
                         } else {
                             ft.show(mCommunityFragment);
                         }
+                        ft.commit();
                         break;
 
                     case R.id.bb_menu_personal:
-                        ToastUtils.showToast(MainActivity.this, "personal");
                         if (mPersonalFragment == null) {
                             mPersonalFragment = new PersonalFragment();
                             ft.add(R.id.content_main_activity, mPersonalFragment, "my");
                         } else {
                             ft.show(mPersonalFragment);
                         }
+                        ft.commit();
+                        if (!BaseApplication.islogin) {
+                            startActivity(new Intent(MainActivity.this, LoginRegisterActivity.class));
+                        }
                         break;
                 }
-                ft.commit();
+
             }
 
             @Override
@@ -92,17 +95,12 @@ public class MainActivity extends BaseActivity {
 
                 switch (menuItemId) {
                     case R.id.bb_menu_home:
-                        ToastUtils.showToast(MainActivity.this, "mHomeFragment");
                         break;
 
                     case R.id.bb_menu_community:
-                        ToastUtils.showToast(MainActivity.this, "mCommunityFragment");
                         break;
 
                     case R.id.bb_menu_personal:
-                        ToastUtils.showToast(MainActivity.this, "mPersonalFragment");
-                        Intent intent = new Intent(MainActivity.this, LoginRegisterActivity.class);
-                        startActivity(intent);
                         break;
 
                 }

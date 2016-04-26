@@ -142,7 +142,6 @@ public class SplashActivity extends BaseActivity {
                     }
                     break;
             }
-            jumpTo();
         }
     }
 
