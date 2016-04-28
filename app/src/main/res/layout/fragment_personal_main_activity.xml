@@ -62,7 +62,7 @@
 
 
     <GridView
-        android:id="@+id/gv_top_myfragment"
+        android:id="@+id/gv_top_personalfragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -84,7 +84,7 @@
         android:listSelector="@color/transparent" />
 
     <GridView
-        android:id="@+id/gv_bottom_myfragment"
+        android:id="@+id/gv_bottom_personalfragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

@@ -20,6 +20,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -240,7 +241,6 @@ public class LoginRegisterActivity extends BaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast(LoginRegisterActivity.this, "登陆");
                 login();
             }
         });
@@ -259,8 +259,45 @@ public class LoginRegisterActivity extends BaseActivity {
             }
         });
 
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        qqLogin();
+                        break;
+                    case 1:
+                        weiboLogin();
+                        break;
+                    case 2:
+                        weixinLogin();
+                        break;
+                }
+
+            }
+        });
     }
 
+
+    private void qqLogin() {
+        ToastUtils.showToast(this, "QQ登陆");
+
+        mTencent = BaseApplication.mTencent;
+
+        if (!mTencent.isSessionValid()) {
+
+            mTencent.login(this, "all", loginListener);
+        }
+
+    }
+
+    private void weiboLogin() {
+
+    }
+
+
+    private void weixinLogin() {
+    }
 
     private void animateRegister() {
         Path path = new Path();
@@ -408,13 +445,8 @@ public class LoginRegisterActivity extends BaseActivity {
     }
 
     public void login() {
-        mTencent = BaseApplication.mTencent;
-
-        if (!mTencent.isSessionValid()) {
-
-            System.out.println(mTencent.isSessionValid() + "&&&&&&&&&&&&&&&&&&&&&&&&&");
-            mTencent.login(this, "all", loginListener);
-        }
+        hideKeyboard();
+        ToastUtils.showToast(this, "登陆");
     }
 
 

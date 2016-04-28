@@ -44,8 +44,8 @@ public class PersonalFragment extends Fragment {
     private IconAdapter bottomAdapter;
     private ListSettingPersonalFragmentAdapter midAdapter;
 
-    private GridView gv_top_myfragment;
-    private GridView gv_bottom_myfragment;
+    private GridView gv_top_personalfragment;
+    private GridView gv_bottom_personalfragment;
     private RecyclerView rv_mid;
     private UserInfoData userInfo;
     private TextView tv_today_weather;
@@ -89,16 +89,15 @@ public class PersonalFragment extends Fragment {
         tv_today_weather = (TextView) view.findViewById(R.id.tv_today_weather);
         tv_tomorrow_weather = (TextView) view.findViewById(R.id.tv_tomorrow_weather);
 
-        gv_top_myfragment = (GridView) view.findViewById(R.id.gv_top_myfragment);
-        gv_top_myfragment.setAdapter(topAdapter = new IconAdapter(getActivity(), topGridicons, topGridnames, R.layout.layout_gv_item_personal_fragment_main_activity, R.id.iv_icon_gv_personal_fragment, R.id.tv_name_gv_personal_fragment));
+        gv_top_personalfragment = (GridView) view.findViewById(R.id.gv_top_personalfragment);
+        gv_top_personalfragment.setAdapter(topAdapter = new IconAdapter(getActivity(), topGridicons, topGridnames, R.layout.layout_gv_item_personal_fragment_main_activity, R.id.iv_icon_gv_personal_fragment, R.id.tv_name_gv_personal_fragment));
 
         rv_mid = (RecyclerView) view.findViewById(R.id.rv_mid_personal_fragment);
         rv_mid.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_mid.setAdapter(midAdapter = new ListSettingPersonalFragmentAdapter(getActivity(), midListLefttexts));
 
-        gv_bottom_myfragment = (GridView) view.findViewById(R.id.gv_bottom_myfragment);
-        gv_bottom_myfragment.setAdapter(bottomAdapter = new IconAdapter(getActivity(), bottomGridicons, bottomGridnames, R.layout.layout_gv_item_personal_fragment_main_activity, R.id.iv_icon_gv_personal_fragment, R.id.tv_name_gv_personal_fragment));
-
+        gv_bottom_personalfragment = (GridView) view.findViewById(R.id.gv_bottom_personalfragment);
+        gv_bottom_personalfragment.setAdapter(bottomAdapter = new IconAdapter(getActivity(), bottomGridicons, bottomGridnames, R.layout.layout_gv_item_personal_fragment_main_activity, R.id.iv_icon_gv_personal_fragment, R.id.tv_name_gv_personal_fragment));
 
         return view;
     }
