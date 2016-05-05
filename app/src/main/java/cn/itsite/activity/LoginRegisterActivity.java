@@ -26,13 +26,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tencent.connect.UserInfo;
+import com.sina.weibo.sdk.auth.AuthInfo;
 import com.tencent.connect.common.Constants;
-import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
-
-import org.json.JSONObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,14 +37,15 @@ import cn.itsite.R;
 import cn.itsite.activity.base.BaseActivity;
 import cn.itsite.application.BaseApplication;
 import cn.itsite.utils.ConstantsUtils;
-import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ToastUtils;
+import cn.itsite.utils.tencentqq.TencentQQ;
+import cn.itsite.utils.weibo.Weibo;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 
 
 public class LoginRegisterActivity extends BaseActivity {
-    private UserInfo mInfo;
+
     private TextView registerBtn;
     private TextView registerTitle;
     private TextInputLayout registerUser;
@@ -71,15 +68,25 @@ public class LoginRegisterActivity extends BaseActivity {
     private Pattern pattern = Pattern.compile(ConstantsUtils.REGEX_MOBILE);
     private Matcher matcher;
 
+    /**
+     * 自定义封装的微博等功能对象
+     */
+    private Weibo mWeibo;
+    /**
+     * 自定义封装的QQ等功能对象
+     */
+    private TencentQQ mTencentQQ;
+
 
     private String[] thirdNames = new String[]{"QQ", "微博", "微信"};
     private int[] thirdIcons = new int[]{R.drawable.icon_qq_pressed, R.drawable.icon_sina_pressed, R.drawable.icon_wx_pressed};
-    public static Tencent mTencent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
+
 
         initView();
         initData();
@@ -281,18 +288,17 @@ public class LoginRegisterActivity extends BaseActivity {
 
     private void qqLogin() {
         ToastUtils.showToast(this, "QQ登陆");
-
-        mTencent = BaseApplication.mTencent;
-
-        if (!mTencent.isSessionValid()) {
-
-            mTencent.login(this, "all", loginListener);
-        }
+        BaseApplication.loginInfo.loginType = 1;
+        mTencentQQ = new TencentQQ(this, BaseApplication.mTencent);
+        mTencentQQ.login();
 
     }
 
     private void weiboLogin() {
-
+        ToastUtils.showToast(this, "weibo登陆");
+        BaseApplication.loginInfo.loginType = 2;
+        mWeibo = new Weibo(this, new AuthInfo(this, ConstantsUtils.APP_KEY, ConstantsUtils.REDIRECT_URL, ConstantsUtils.SCOPE));
+        mWeibo.authorize();
     }
 
 
@@ -449,130 +455,27 @@ public class LoginRegisterActivity extends BaseActivity {
         ToastUtils.showToast(this, "登陆");
     }
 
-
-    IUiListener loginListener = new BaseUiListener() {
-        @Override
-        protected void doComplete(JSONObject values) {
-            initOpenidAndToken(values);
-            updateUserInfo();
-            LoginRegisterActivity.this.finish();
-        }
-    };
-
-    private class BaseUiListener implements IUiListener {
-
-        @Override
-        public void onComplete(Object response) {
-            if (null == response) {
-                return;
-            }
-            JSONObject jsonResponse = (JSONObject) response;
-            if (null != jsonResponse && jsonResponse.length() == 0) {
-                return;
-            }
-            doComplete((JSONObject) response);
-        }
-
-        protected void doComplete(JSONObject values) {
-
-        }
-
-        @Override
-        public void onError(UiError e) {
-        }
-
-        @Override
-        public void onCancel() {
-
-        }
-    }
-
-    private void initOpenidAndToken(JSONObject jsonObject) {
-
-        String token = jsonObject.optString(Constants.PARAM_ACCESS_TOKEN);
-        String expires = jsonObject.optString(Constants.PARAM_EXPIRES_IN);
-        String openId = jsonObject.optString(Constants.PARAM_OPEN_ID);
-
-        BaseApplication.loginInfo.token = token;
-        BaseApplication.loginInfo.expires = expires;
-        BaseApplication.loginInfo.openId = openId;
-
-        SpUtils.setString(this, Constants.PARAM_ACCESS_TOKEN, token);
-        SpUtils.setString(this, Constants.PARAM_EXPIRES_IN, expires);
-        SpUtils.setString(this, Constants.PARAM_OPEN_ID, openId);
-
-        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
-            mTencent.setAccessToken(token, expires);
-            mTencent.setOpenId(openId);
-        }
-    }
-
-
-    private void updateUserInfo() {
-        if (mTencent != null && mTencent.isSessionValid()) {
-            mInfo = new UserInfo(this, mTencent.getQQToken());
-            mInfo.getUserInfo(UserInfolistener);
-
-        } else {
-        }
-    }
-
-
-    IUiListener UserInfolistener = new IUiListener() {
-
-        @Override
-        public void onError(UiError e) {
-
-        }
-
-        @Override
-        public void onComplete(Object response) {
-            if (null == response) {
-                return;
-            }
-            JSONObject jsonResponse = (JSONObject) response;
-            if (null != jsonResponse && jsonResponse.length() == 0) {
-                return;
-            }
-            JSONObject json = (JSONObject) response;
-
-            if (json.has("figureurl")) {
-
-                System.out.println(json.optString("figureurl_qq_1"));
-
-                String figureurl = json.optString("figureurl_qq_1");
-
-                BaseApplication.userInfo.figureurUrl = figureurl;
-                SpUtils.setString(LoginRegisterActivity.this, ConstantsUtils.USERINFO_FIGUREURL, figureurl);
-
-            }
-
-            if (json.has("nickname")) {
-                System.out.println(json.optString("nickname"));
-                String nickname = json.optString("nickname");
-
-                BaseApplication.userInfo.nickname = nickname;
-                SpUtils.setString(LoginRegisterActivity.this, ConstantsUtils.USERINFO_NICKNAME, nickname);
-            }
-            BaseApplication.userInfo.loginType = 1;
-
-            SpUtils.setBoolean(LoginRegisterActivity.this, ConstantsUtils.ISLOGIN, true);
-
-            BaseApplication.bus.post(BaseApplication.userInfo);
-        }
-
-        @Override
-        public void onCancel() {
-
-        }
-    };
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_LOGIN) {
-            Tencent.onActivityResultData(requestCode, resultCode, data, loginListener);
-        }
         super.onActivityResult(requestCode, resultCode, data);
+
+        switch (BaseApplication.loginInfo.loginType) {
+            case ConstantsUtils.MOBILE_LOGIN:
+                break;
+            case ConstantsUtils.QQ_LOGIN:
+                if (requestCode == Constants.REQUEST_LOGIN) {
+                    Tencent.onActivityResultData(requestCode, resultCode, data, mTencentQQ.loginListener);
+                }
+                break;
+            case ConstantsUtils.WEIBO_LOGIN:
+                if (mWeibo.mSsoHandler != null) {
+                    mWeibo.mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+                }
+                break;
+            case ConstantsUtils.WEIXIN_LOGIN:
+                break;
+        }
+
     }
 
     @Override

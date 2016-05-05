@@ -18,7 +18,7 @@ import cn.itsite.utils.SpUtils;
 public class GuideActivity extends BaseActivity {
     private Button bt_guide;
     private ViewPager vp;
-    private int[] resouces = {R.drawable.welcome1, R.drawable.welcome2, R.drawable.welcome3, R.drawable.welcome4};
+    private int[] resouces = {R.drawable.welcome1, R.drawable.welcome2, R.drawable.welcome3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,6 +6,7 @@ public class LoginInfoData {
     public String token;
     public String expires;
     public String openId;
+    public int loginType;
 
     private LoginInfoData() {
     }

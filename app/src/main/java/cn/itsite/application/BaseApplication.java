@@ -9,7 +9,6 @@ import com.tencent.tauth.Tencent;
 import cn.itsite.bean.CategoriesData;
 import cn.itsite.bean.LoginInfoData;
 import cn.itsite.bean.UserInfoData;
-import cn.itsite.utils.ConstantsUtils;
 
 
 public class BaseApplication extends Application {
@@ -28,7 +27,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
-        mTencent = Tencent.createInstance(ConstantsUtils.QQ_APP_ID, this.getApplicationContext());
         context = getApplicationContext();
         initUserConfig();
     }

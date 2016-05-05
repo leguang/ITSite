@@ -5,7 +5,7 @@ public class UserInfoData {
     private static UserInfoData userInfoData = null;
     public String nickname;
     public String figureurUrl;
-    public int loginType;
+
 
     private UserInfoData() {
     }

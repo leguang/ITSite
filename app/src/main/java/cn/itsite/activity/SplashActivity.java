@@ -17,6 +17,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.Tencent;
 
@@ -27,9 +28,10 @@ import cn.itsite.activity.base.BaseActivity;
 import cn.itsite.application.BaseApplication;
 import cn.itsite.bean.CategoriesData;
 import cn.itsite.bean.WeatherData;
-import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ConstantsUtils;
+import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ToastUtils;
+import cn.itsite.utils.weibo.AccessTokenKeeper;
 
 public class SplashActivity extends BaseActivity {
     public LocationClient mLocationClient = null;
@@ -56,39 +58,76 @@ public class SplashActivity extends BaseActivity {
 
     private void initLogin() {
         BaseApplication.islogin = SpUtils.getBoolean(this, ConstantsUtils.ISLOGIN, false);
+        BaseApplication.loginInfo.loginType = SpUtils.getInt(this, ConstantsUtils.USERINFO_LOGIN_TYPE, ConstantsUtils.ERROR_LOGIN_TYPE);
 
         if (BaseApplication.islogin) {
-            BaseApplication.mTencent = Tencent.createInstance(ConstantsUtils.QQ_APP_ID, this.getApplicationContext());
-            String token = SpUtils.getString(this, Constants.PARAM_ACCESS_TOKEN, null);
-            String expires = SpUtils.getString(this, Constants.PARAM_EXPIRES_IN, null);
-            String openId = SpUtils.getString(this, Constants.PARAM_OPEN_ID, null);
 
-            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
-                BaseApplication.mTencent.setAccessToken(token, expires);
-                BaseApplication.mTencent.setOpenId(openId);
+            switch (BaseApplication.loginInfo.loginType) {
+                case ConstantsUtils.MOBILE_LOGIN:
+                    break;
+                case ConstantsUtils.QQ_LOGIN:
+                    initQQLogin();
+                    break;
+                case ConstantsUtils.WEIBO_LOGIN:
+                    initWeiboLogin();
+                    break;
+                case ConstantsUtils.WEIXIN_LOGIN:
+                    break;
             }
 
 
-            if (BaseApplication.mTencent.isSessionValid()) {
+        }
+    }
 
-                System.out.println(BaseApplication.mTencent.isSessionValid() + "********################*************");
+    private void initQQLogin() {
+        BaseApplication.mTencent = Tencent.createInstance(ConstantsUtils.QQ_APP_ID, this.getApplicationContext());
+        String token = SpUtils.getString(this, Constants.PARAM_ACCESS_TOKEN, null);
+        String expires = SpUtils.getString(this, Constants.PARAM_EXPIRES_IN, null);
+        String openId = SpUtils.getString(this, Constants.PARAM_OPEN_ID, null);
 
-                BaseApplication.userInfo.nickname = SpUtils.getString(this, ConstantsUtils.USERINFO_NICKNAME, null);
-                BaseApplication.userInfo.figureurUrl = SpUtils.getString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
-                BaseApplication.userInfo.loginType = SpUtils.getInt(this, ConstantsUtils.USERINFO_LOGIN_TYPE, ConstantsUtils.ERROR_LOGIN_TYPE);
+        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
+            BaseApplication.mTencent.setAccessToken(token, expires);
+            BaseApplication.mTencent.setOpenId(openId);
+        }
 
+        if (BaseApplication.mTencent.isSessionValid()) {
 
-            } else {
+            BaseApplication.loginInfo.token = token;
+            BaseApplication.loginInfo.expires = expires;
+            BaseApplication.loginInfo.openId = openId;
 
-                BaseApplication.islogin = false;
-                SpUtils.setBoolean(this, ConstantsUtils.ISLOGIN, BaseApplication.islogin);
-                ToastUtils.showToast(this, "登陆已过期");
+            BaseApplication.userInfo.nickname = SpUtils.getString(this, ConstantsUtils.USERINFO_NICKNAME, null);
+            BaseApplication.userInfo.figureurUrl = SpUtils.getString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
+        } else {
+            ToastUtils.showToast(this, "登陆已过期");
+            BaseApplication.islogin = false;
 
-                SpUtils.setString(this, ConstantsUtils.USERINFO_NICKNAME, null);
-                SpUtils.setString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
-                SpUtils.setString(this, ConstantsUtils.USERINFO_LOGIN_TYPE, null);
+            SpUtils.setBoolean(this, ConstantsUtils.ISLOGIN, BaseApplication.islogin);
+            SpUtils.setString(this, ConstantsUtils.USERINFO_NICKNAME, null);
+            SpUtils.setString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
+            SpUtils.setString(this, ConstantsUtils.USERINFO_LOGIN_TYPE, null);
 
-            }
+        }
+    }
+
+    private void initWeiboLogin() {
+        Oauth2AccessToken mAccessToken = AccessTokenKeeper.readAccessToken(this);
+        if (mAccessToken != null && mAccessToken.isSessionValid()) {
+
+//            BaseApplication.loginInfo.token = mAccessToken.getToken();
+//            BaseApplication.loginInfo.expires = Long.toString(mAccessToken.getExpiresTime());
+//            BaseApplication.loginInfo.openId = mAccessToken.getUid();
+            BaseApplication.userInfo.nickname = SpUtils.getString(this, ConstantsUtils.USERINFO_NICKNAME, null);
+            BaseApplication.userInfo.figureurUrl = SpUtils.getString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
+
+        } else {
+            ToastUtils.showToast(this, "登陆已过期");
+            BaseApplication.islogin = false;
+
+            SpUtils.setBoolean(this, ConstantsUtils.ISLOGIN, BaseApplication.islogin);
+            SpUtils.setString(this, ConstantsUtils.USERINFO_NICKNAME, null);
+            SpUtils.setString(this, ConstantsUtils.USERINFO_FIGUREURL, null);
+            SpUtils.setString(this, ConstantsUtils.USERINFO_LOGIN_TYPE, null);
 
         }
     }
