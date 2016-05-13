@@ -20,6 +20,11 @@ public class ConstantsUtils {
      * 腾讯开发平台应用ID
      */
     public static final String QQ_APP_ID = "1105136720";
+
+    /**
+     * 腾讯开发平台应用ID
+     */
+    public static final String WEIXIN_APP_ID = "wx013cfac3ddb4bc4c";
     /**
      * 用户信息
      */

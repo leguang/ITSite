@@ -63,7 +63,13 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.ShareActivity"
-            android:theme="@style/AppTheme.Transparent" />
+            android:theme="@style/AppTheme.Transparent">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".activity.CommentActivity" />
 
         <activity android:name=".activity.SerchActivity" />

@@ -1,6 +1,8 @@
 package cn.itsite.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,24 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WebpageObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.api.share.BaseResponse;
+import com.sina.weibo.sdk.api.share.IWeiboHandler;
+import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
+import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
+import com.sina.weibo.sdk.api.share.WeiboShareSDK;
+import com.sina.weibo.sdk.constant.WBConstants;
+import com.sina.weibo.sdk.utils.Utility;
 import com.tencent.connect.share.QQShare;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXTextObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
@@ -21,12 +39,12 @@ import cn.itsite.R;
 import cn.itsite.activity.base.BaseActivity;
 import cn.itsite.adapter.IconAdapter;
 import cn.itsite.bean.NewsData;
-import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ConstantsUtils;
+import cn.itsite.utils.SpUtils;
 import cn.itsite.utils.ToastUtils;
 import cn.itsite.view.RangeSliderView;
 
-public class ShareActivity extends BaseActivity {
+public class ShareActivity extends BaseActivity implements IWeiboHandler.Response {
 
     private GridView gv_more_share;
     private GridView gv_more_function;
@@ -44,6 +62,8 @@ public class ShareActivity extends BaseActivity {
 
     private int[] functionIcons = new int[]{R.drawable.info_refresh_night, R.drawable.info_day, R.drawable.info_favo};
     private Tencent mTencent;
+    private IWeiboShareAPI mWeiboShareAPI = null;
+    private IWXAPI api;
 
 
     @Override
@@ -51,7 +71,19 @@ public class ShareActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
+        newsData = (NewsData) getIntent().getSerializableExtra("newsData");
+
         mTencent = Tencent.createInstance(ConstantsUtils.QQ_APP_ID, this.getApplicationContext());
+
+        api = WXAPIFactory.createWXAPI(this, ConstantsUtils.WEIXIN_APP_ID);
+
+        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, ConstantsUtils.APP_KEY);
+
+        mWeiboShareAPI.registerApp();
+
+        if (savedInstanceState != null) {
+            mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
+        }
 
         initView();
         initData();
@@ -87,7 +119,7 @@ public class ShareActivity extends BaseActivity {
                         showWeiboShare();
                         break;
                     case 3:
-                        showWeiboFriendsShare();
+                        showWeixinFriendsShare();
                         break;
                     case 4:
                         showWeixinShare();
@@ -164,21 +196,70 @@ public class ShareActivity extends BaseActivity {
     }
 
     protected void showWeiboShare() {
+        ToastUtils.showToast(ShareActivity.this, "微博分享");
+
+        // 1. 初始化微博的分享消息
+        WeiboMultiMessage weiboMessage = new WeiboMultiMessage();
+
+        TextObject textObject = textObject = new TextObject();
+        WebpageObject mediaObject = new WebpageObject();
+        if (newsData != null) {
+            textObject.text = newsData.title;
+
+            mediaObject.identify = Utility.generateGUID();
+            mediaObject.title = newsData.title;
+            mediaObject.description = newsData.description;
+
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+            // 设置 Bitmap 类型的图片到视频对象里.设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
+            mediaObject.setThumbImage(bitmap);
+            mediaObject.actionUrl = newsData.link;
+        }
+
+        weiboMessage.textObject = textObject;
+        weiboMessage.mediaObject = mediaObject;
+        // 2. 初始化从第三方到微博的消息请求
+        SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
+        // 用transaction唯一标识一个请求
+        request.transaction = String.valueOf(System.currentTimeMillis());
+        request.multiMessage = weiboMessage;
+        // 3. 发送请求消息到微博，唤起微博分享界面
+        mWeiboShareAPI.sendRequest(ShareActivity.this, request);
 
     }
 
-    private void showWeiboFriendsShare() {
+    private void showWeixinFriendsShare() {
+
     }
 
     protected void showWeixinShare() {
 
+        ToastUtils.showToast(ShareActivity.this, "微信分享");
+        // 初始化一个WXTextObject对象
+        WXTextObject textObj = new WXTextObject();
+        textObj.text = newsData.title;
+
+        // 用WXTextObject对象初始化一个WXMediaMessage对象
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = textObj;
+        msg.description = newsData.title;
+
+        // 构造一个Req
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis()); // transaction字段用于唯一标识一个请求
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+
+
+        // 调用api接口发送数据到微信
+        api.sendReq(req);
     }
 
     protected void showQQShare() {
-        String title = "title";
-        String imageUrl = "http://img3.douban.com/lpic/s3635685.jpg";
-        String targetUrl = "http://douban.fm/?start=8508g3c27g-3&amp;cid=-3";
-        String summary = "豆瓣音乐-Lollipop &lt;Stand By Me> 1990 字数不够？再加点？";
+        String title = newsData.title;
+        String imageUrl = ConstantsUtils.LOGO_URL;
+        String targetUrl = newsData.link;
+        String summary = newsData.description;
         String appName = "IT站点";
         final Bundle params = new Bundle();
         params.putString(QQShare.SHARE_TO_QQ_TITLE, title);
@@ -190,6 +271,32 @@ public class ShareActivity extends BaseActivity {
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, 0x00);
 
         mTencent.shareToQQ(ShareActivity.this, params, qqShareListener);
+    }
+
+    /**
+     * 接收微客户端博请求的数据。
+     * 当微博客户端唤起当前应用并进行分享时，该方法被调用。
+     *
+     * @param baseResponse 微博请求数据对象
+     * @see {@link IWeiboShareAPI#handleWeiboRequest}
+     */
+    @Override
+    public void onResponse(BaseResponse baseResponse) {
+
+        if (baseResponse != null) {
+            switch (baseResponse.errCode) {
+                case WBConstants.ErrorCode.ERR_OK:
+                    Toast.makeText(this, "分享成功", Toast.LENGTH_LONG).show();
+                    break;
+                case WBConstants.ErrorCode.ERR_CANCEL:
+                    Toast.makeText(this, "分享取消", Toast.LENGTH_LONG).show();
+                    break;
+                case WBConstants.ErrorCode.ERR_FAIL:
+                    Toast.makeText(this, "分享失败" + "Error Message: " + baseResponse.errMsg,
+                            Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
     }
 
 
@@ -261,5 +368,15 @@ public class ShareActivity extends BaseActivity {
         if (mTencent != null) {
             mTencent.releaseResource();
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        // 从当前应用唤起微博并进行分享后，返回到当前应用时，需要在此处调用该函数
+        // 来接收微博客户端返回的数据；执行成功，返回 true，并调用
+        // {@link IWeiboHandler.Response#onResponse}；失败返回 false，不调用上述回调
+        mWeiboShareAPI.handleWeiboResponse(intent, this);
     }
 }

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/AppUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/DensityUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/KeyBoardUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/NetUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/SDCardUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/ScreenUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/cn/itsite/utils/SharedPreferencesUtils.java" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

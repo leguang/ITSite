@@ -244,6 +244,7 @@ public class NewsDetailActivity extends BaseActivity {
 
     public void onClick_more(View view) {
         Intent intent = new Intent(this, ShareActivity.class);
+        intent.putExtra("newsData", newsData);
         startActivity(intent);
     }
 

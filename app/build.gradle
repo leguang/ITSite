@@ -42,4 +42,6 @@ dependencies {
         transitive = true;
     }
     compile files('libs/BaiduLBS_Android.jar')
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+
 }
